@@ -29,7 +29,7 @@ out = cv2.VideoWriter('/kaggle/working/sit1.mp4', cv2.VideoWriter_fourcc(*'XVID'
 
 start_time = time.time()
 
-with mp_face_mesh.FaceMesh(max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.5, min_tracking_confidence=0.5) as face_mesh:
+with mp_face_mesh.FaceMesh(max_num_faces=2, refine_landmarks=True, min_detection_confidence=0.5, min_tracking_confidence=0.5) as face_mesh:
     while cap.isOpened():
         success, image = cap.read()
 
