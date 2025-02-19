@@ -1,4 +1,5 @@
 import cv2
+import time
 import mediapipe as mp
 import numpy as np
 mp_drawing = mp.solutions.drawing_utils
@@ -10,8 +11,23 @@ from fp_helper import pipelineHeadTiltPose, draw_face_landmarks_fp
 from ms_helper import pipelineMouthState
 from es_helper import pipelineEyesState
 
-# Initiate Camera
-cap = cv2.VideoCapture(0)
+# Open video file or capture from webcam
+video_path = "/kaggle/input/situations/sit1.mp4"
+cap = cv2.VideoCapture(video_path)
+
+if not cap.isOpened():
+    print("Error: Cannot open video file or webcam.")
+    exit()
+
+# Get video properties
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+fps = int(cap.get(cv2.CAP_PROP_FPS))
+
+# Output video writer
+out = cv2.VideoWriter('/kaggle/working/sit1.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
+
+start_time = time.time()
 
 with mp_face_mesh.FaceMesh(max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.5, min_tracking_confidence=0.5) as face_mesh:
     while cap.isOpened():
@@ -41,8 +57,12 @@ with mp_face_mesh.FaceMesh(max_num_faces=1, refine_landmarks=True, min_detection
                 # EYES STATE ---------------------------------------
                 r_eyes_state, l_eyes_state = pipelineEyesState(image, face_landmarks)
 
-        # Show Image
-        cv2.imshow('Face Mesh', image)
-        if cv2.waitKey(1) == ord('q'):
-            break
-cap.release()
+        # Write frame to output video
+        out.write(image)
+    cap.release()
+    out.release()
+
+    end_time = time.time()
+    # Calculate execution time
+    execution_time = end_time - start_time
+    print(f"Execution Time: {execution_time:.2f} seconds")
