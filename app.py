@@ -12,7 +12,7 @@ from ms_helper import pipelineMouthState
 from es_helper import pipelineEyesState
 
 # Open video file or capture from webcam
-video_path = "/kaggle/input/situations/sit1.mp4"
+video_path = "/kaggle/input/situations/plateia_not_looking.mp4"
 cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
@@ -25,7 +25,7 @@ frame_height = int(cap.get(4))
 fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 # Output video writer
-out = cv2.VideoWriter('/kaggle/working/sit1.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
+out = cv2.VideoWriter('/kaggle/working/plateia_not_looking.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
 
 start_time = time.time()
 
